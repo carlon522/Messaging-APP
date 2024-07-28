@@ -2,22 +2,20 @@ import React from 'react';
 import MessageList from './MessageList';
 import SendMessage from './SendMessage';
 import { Container, Box, Button } from '@mui/material';
-import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
+import { collection, getDocs, deleteDoc, writeBatch } from 'firebase/firestore';
 import { db } from '../auth';
 
 const Chat = () => {
   const handleClearChat = async () => {
     const querySnapshot = await getDocs(collection(db, "messages"));
-    const batch = db.batch(); // using batch for bulk operations
+    const batch = writeBatch(db); // Using writeBatch for bulk operations
 
     querySnapshot.forEach(docSnapshot => {
-      const messageRef = doc(db, "messages", docSnapshot.id);
-      batch.delete(messageRef);
+      batch.delete(docSnapshot.ref);
     });
 
-    await batch.commit().then(() => {
-      console.log("Chat cleared!");
-    });
+    await batch.commit();
+    console.log("Chat cleared!");
   };
 
   return (
