@@ -5,7 +5,8 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db } from '../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../auth';
-import { TextField, Button, Box, Input } from '@mui/material';
+import { TextField, Button, Box, Input, IconButton } from '@mui/material';
+import { Add as AddIcon } from '@mui/icons-material';
 
 const SendMessage = () => {
   const [user] = useAuthState(auth);
@@ -48,20 +49,34 @@ const SendMessage = () => {
     }
   };
 
+  const hiddenFileInput = React.useRef(null);
+
+  const handleClick = () => {
+    hiddenFileInput.current.click();
+  };
+
+  const handleFileChange = (event) => {
+    setImage(event.target.files[0]);
+  };
+
   return (
-    <Box component="form" onSubmit={handleSend} style={{ display: 'flex', margin: '10px 0' }}>
+    <Box component="form" onSubmit={handleSend} style={{ display: 'flex', margin: '10px 0', alignItems: 'center' }}>
       <TextField
         label="Message"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         fullWidth
-        required
         variant="outlined"
       />
-      <Input 
-        type="file" 
-        onChange={(e) => setImage(e.target.files[0])} 
-        inputProps={{ accept: 'image/*' }}
+      <IconButton color="primary" component="span" onClick={handleClick}>
+        <AddIcon />
+      </IconButton>
+      <input
+        type="file"
+        ref={hiddenFileInput}
+        onChange={handleFileChange}
+        style={{ display: 'none' }}
+        accept="image/*"
       />
       <Button type="submit" variant="contained" color="primary" style={{ marginLeft: '10px' }}>
         Send
