@@ -1,3 +1,4 @@
+// src/components/MessageList.js
 import React, { useEffect, useState, useRef } from 'react';
 import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
 import { db } from '../auth';

@@ -1,6 +1,6 @@
 // src/auth.js
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { app } from './firebase'; // Import the initialized app from firebase.js
+import { app, db } from './firebase'; // Import the initialized app and firestore from firebase.js
 
 const auth = getAuth(app);
 
@@ -22,4 +22,4 @@ const signInWithGoogle = () => {
   return signInWithPopup(auth, googleProvider);
 };
 
-export { signUp, logIn, logOut, signInWithGoogle, auth };
+export { signUp, logIn, logOut, signInWithGoogle, auth, db };

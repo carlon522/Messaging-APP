@@ -1,3 +1,4 @@
+// src/components/SendMessage.js
 import React, { useState, useRef } from 'react';
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
