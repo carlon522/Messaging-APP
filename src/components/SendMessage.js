@@ -5,8 +5,9 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db } from '../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../auth';
-import { TextField, Button, Box, Input, IconButton } from '@mui/material';
+import { TextField, Button, Box, IconButton } from '@mui/material';
 import { Add as AddIcon } from '@mui/icons-material';
+import { encrypt } from '../cryptoUtils';
 
 const SendMessage = () => {
   const [user] = useAuthState(auth);
@@ -35,9 +36,11 @@ const SendMessage = () => {
       imageUrl = await getDownloadURL(storageRef);
     }
 
+    const encryptedMessage = encrypt(message);
+
     try {
       await addDoc(collection(db, "messages"), {
-        text: message,
+        text: encryptedMessage,
         user: user.email,
         imageUrl: imageUrl,
         timestamp: serverTimestamp()
