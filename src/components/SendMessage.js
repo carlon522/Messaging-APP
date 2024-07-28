@@ -1,13 +1,10 @@
-// src/components/SendMessage.js
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { db } from '../firebase';
+import { db, auth } from '../auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '../auth';
 import { TextField, Button, Box, IconButton } from '@mui/material';
 import { Add as AddIcon } from '@mui/icons-material';
-import { encrypt } from '../cryptoUtils';
 
 const SendMessage = () => {
   const [user] = useAuthState(auth);
@@ -36,12 +33,10 @@ const SendMessage = () => {
       imageUrl = await getDownloadURL(storageRef);
     }
 
-    const encryptedMessage = encrypt(message);
-
     try {
       await addDoc(collection(db, "messages"), {
-        text: encryptedMessage,
-        user: user.email,
+        text: message,
+        user: user ? user.email : "Anonymous",
         imageUrl: imageUrl,
         timestamp: serverTimestamp()
       });
@@ -52,7 +47,7 @@ const SendMessage = () => {
     }
   };
 
-  const hiddenFileInput = React.useRef(null);
+  const hiddenFileInput = useRef(null);
 
   const handleClick = () => {
     hiddenFileInput.current.click();

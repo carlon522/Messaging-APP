@@ -1,4 +1,3 @@
-// src/components/Chat.js
 import React from 'react';
 import MessageList from './MessageList';
 import SendMessage from './SendMessage';
@@ -8,7 +7,7 @@ const Chat = () => {
   return (
     <Container
       maxWidth="md"
-      style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 64px)' }} // Adjust height to avoid overlapping with the AppBar
+      style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 64px)' }} 
     >
       <Typography variant="h4" style={{ textAlign: 'center', margin: '20px 0' }}>
         Chat
